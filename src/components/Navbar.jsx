@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -55,12 +56,12 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end">
-        <a
-          className="btn border-0"
-          style={{ backgroundColor: "#9FC2CC", color: "#331832" }}
+        <Link
+          to={`/auth/login`}
+          className="btn border-0 bg-[#9FC2CC] text-[#331832]"
         >
           Login
-        </a>
+        </Link>
       </div>
     </div>
   );
