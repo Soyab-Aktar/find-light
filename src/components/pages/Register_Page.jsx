@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaEye, FaEyeSlash, FaGoogle, FaUser, FaImage } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../provider/AuthProvider";
 
 const Register_Page = () => {
+  const { createNewUser, setUser, updateUserProfile, signInWithGoogle } =
+    useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -51,6 +55,46 @@ const Register_Page = () => {
 
     console.log({ name, email, photoURL, password });
     // Handle registration logic here
+    createNewUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        updateUserProfile({
+          displayName: name,
+          photoURL: photoURL,
+        }).then(() => {
+          navigate("/");
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // Show it in the UI
+        alert(`Error: ${errorMessage}`);
+        alert(`Error: ${errorCode}`);
+      });
+  };
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        console.log("Google sign-in successful:", user);
+        navigate("/"); // Redirect to home page
+      })
+      .catch((error) => {
+        console.error("Google sign-in error:", error);
+
+        // Handle specific errors
+        if (error.code === "auth/popup-closed-by-user") {
+          console.log("User closed the popup");
+          // Don't show error for this case as it's user-initiated
+        } else if (error.code === "auth/popup-blocked") {
+          alert("Please allow popups for this website to use Google Sign-In");
+        } else {
+          alert(`Error: ${error.message}`);
+        }
+      });
   };
 
   return (
@@ -188,6 +232,7 @@ const Register_Page = () => {
           {/* Google Register Button */}
           <div>
             <button
+              onClick={handleGoogleSignIn}
               type="button"
               className="w-full flex justify-center items-center py-3 px-4 border-2 rounded-lg text-sm font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 cursor-pointer bg-[#F1ECCE] text-[#331832] border-[#694D75]"
             >

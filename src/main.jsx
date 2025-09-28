@@ -1,19 +1,25 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home_Layout from "./components/layout/Home_Layout.jsx";
 import Auth_layout from "./components/layout/Auth_layout.jsx";
 import Register_Page from "./components/pages/Register_Page.jsx";
 import Login_Page from "./components/pages/Login_Page.jsx";
 import AuthProvider from "./provider/AuthProvider.jsx";
+import ForgotPassword_Page from "./components/pages/ForgotPassword_Page.jsx";
+import Profile_Page from "./components/pages/Profile_Page.jsx";
+import Subscription_Page from "./components/pages/Subscription_Page.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home_Layout></Home_Layout>,
     children: [],
+  },
+  {
+    path: "/subscription",
+    element: <Subscription_Page></Subscription_Page>,
   },
   {
     path: "auth",
@@ -26,6 +32,14 @@ const router = createBrowserRouter([
       {
         path: "/auth/register",
         element: <Register_Page></Register_Page>,
+      },
+      {
+        path: "/auth/forgot-password",
+        element: <ForgotPassword_Page></ForgotPassword_Page>,
+      },
+      {
+        path: "/auth/profile",
+        element: <Profile_Page></Profile_Page>,
       },
     ],
   },

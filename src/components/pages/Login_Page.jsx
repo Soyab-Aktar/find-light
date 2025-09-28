@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../provider/AuthProvider";
 
 const Login_Page = () => {
+  const { loginUser, setUser, signInWithGoogle } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState({});
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -15,7 +23,40 @@ const Login_Page = () => {
     const email = form.get("email");
     const password = form.get("password");
     console.log({ email, password });
+    loginUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        navigate("/");
+      })
+      .catch((err) => {
+        setError({ ...error, login: err.code });
+        alert("Password Incorrect");
+      });
   };
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+        console.log("Google sign-in successful:", user);
+        navigate("/"); // Redirect to home page
+      })
+      .catch((error) => {
+        console.error("Google sign-in error:", error);
+
+        // Handle specific errors
+        if (error.code === "auth/popup-closed-by-user") {
+          console.log("User closed the popup");
+          // Don't show error for this case as it's user-initiated
+        } else if (error.code === "auth/popup-blocked") {
+          alert("Please allow popups for this website to use Google Sign-In");
+        } else {
+          alert(`Error: ${error.message}`);
+        }
+      });
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F1ECCE]">
       <div className="max-w-md w-full space-y-8 p-8 rounded-xl shadow-2xl bg-[#9FC2CC]">
@@ -33,6 +74,8 @@ const Login_Page = () => {
               <input
                 name="email"
                 type="email"
+                value={email}
+                onChange={handleEmailChange}
                 required
                 className="w-full px-3 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 border-[#694D75] bg-[#F1ECCE] text-[#331832]"
                 placeholder="Enter your email"
@@ -67,6 +110,8 @@ const Login_Page = () => {
 
             <div className="flex flex-col gap-1 text-right">
               <Link
+                to={`/auth/forgot-password`}
+                state={{ email: email }}
                 type="button"
                 className="text-sm hover:underline transition-all duration-200 cursor-pointer text-[#1B5299]"
               >
@@ -104,6 +149,7 @@ const Login_Page = () => {
           {/* Google Login Button */}
           <div>
             <button
+              onClick={handleGoogleSignIn}
               type="button"
               className="w-full flex justify-center items-center py-3 px-4 border-2 rounded-lg text-sm font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 cursor-pointer bg-[#F1ECCE] text-[#331832] border-[#694D75]"
             >
