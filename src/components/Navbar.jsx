@@ -75,11 +75,11 @@ const Navbar = () => {
             <Link to="/">Home</Link>
           </li>
           {/* Conditionally show My Profile only when user is logged in */}
-          {user && (
+          {/* {user && (
             <li>
               <Link to="/auth/profile">My Profile</Link>
             </li>
-          )}
+          )} */}
           <li>
             <Link to="/subscription">Subscription</Link>
           </li>

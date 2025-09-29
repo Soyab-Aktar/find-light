@@ -8,6 +8,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { AuthContext } from "../../provider/AuthProvider";
+import { showError, showSuccess } from "../../utils/toast";
 
 const Profile_Page = () => {
   const { user, updateUserProfile } = useContext(AuthContext);
@@ -31,22 +32,24 @@ const Profile_Page = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsUpdating(true);
-    setMessage("");
 
-    // Update profile with new data
     updateUserProfile({
       displayName: formData.displayName,
       photoURL: formData.photoURL,
     })
       .then(() => {
-        setMessage("Profile updated successfully!");
+        showSuccess(
+          "Your profile has been updated successfully!",
+          "Profile Updated"
+        );
         setIsEditing(false);
-        // Note: Email update requires additional authentication and is more complex
-        // For now, we'll only update displayName and photoURL
       })
       .catch((error) => {
         console.error("Profile update error:", error);
-        setMessage("Failed to update profile. Please try again.");
+        showError(
+          "Failed to update profile. Please try again.",
+          "Update Failed"
+        );
       })
       .finally(() => {
         setIsUpdating(false);

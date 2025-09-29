@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { FaEye, FaEyeSlash, FaGoogle, FaUser, FaImage } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
+import { showError, showSuccess } from "../../utils/toast";
 
 const Register_Page = () => {
   const { createNewUser, setUser, updateUserProfile, signInWithGoogle } =
@@ -49,11 +50,10 @@ const Register_Page = () => {
       if (!passwordValidation.errors.hasMinLength) {
         errorMessage += "• At least 6 characters long\n";
       }
-      alert(errorMessage);
+      showError(errorMessage, "Password Requirements");
       return;
     }
 
-    console.log({ name, email, photoURL, password });
     // Handle registration logic here
     createNewUser(email, password)
       .then((result) => {
@@ -70,8 +70,8 @@ const Register_Page = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
         // Show it in the UI
-        alert(`Error: ${errorMessage}`);
-        alert(`Error: ${errorCode}`);
+        showError(`Error: ${errorMessage}`);
+        showError(`Error: ${errorCode}`);
       });
   };
   const handleGoogleSignIn = () => {
@@ -79,7 +79,10 @@ const Register_Page = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
-        console.log("Google sign-in successful:", user);
+        showSuccess(
+          `Welcome back, ${user.displayName || user.email}!`,
+          "Login Successful"
+        );
         navigate("/"); // Redirect to home page
       })
       .catch((error) => {
@@ -90,9 +93,11 @@ const Register_Page = () => {
           console.log("User closed the popup");
           // Don't show error for this case as it's user-initiated
         } else if (error.code === "auth/popup-blocked") {
-          alert("Please allow popups for this website to use Google Sign-In");
+          showError(
+            "Please allow popups for this website to use Google Sign-In"
+          );
         } else {
-          alert(`Error: ${error.message}`);
+          showError(`Error: ${error.message}`);
         }
       });
   };

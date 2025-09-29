@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
+import { showError, showSuccess } from "../../utils/toast";
 
 const Login_Page = () => {
   const { loginUser, setUser, signInWithGoogle } = useContext(AuthContext);
@@ -27,11 +28,15 @@ const Login_Page = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
+        showSuccess(
+          `Welcome back, ${user.displayName || user.email}!`,
+          "Login Successful"
+        );
         navigate("/");
       })
       .catch((err) => {
         setError({ ...error, login: err.code });
-        alert("Password Incorrect");
+        showError("Login Failed");
       });
   };
   const handleGoogleSignIn = () => {
@@ -50,9 +55,11 @@ const Login_Page = () => {
           console.log("User closed the popup");
           // Don't show error for this case as it's user-initiated
         } else if (error.code === "auth/popup-blocked") {
-          alert("Please allow popups for this website to use Google Sign-In");
+          showError(
+            "Please allow popups for this website to use Google Sign-In"
+          );
         } else {
-          alert(`Error: ${error.message}`);
+          showError(`Error: ${error.message}`);
         }
       });
   };

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { FaEnvelope, FaArrowLeft } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
+import { showError } from "../../utils/toast";
 
 const ForgotPassword_Page = () => {
   const { resetPassword } = useContext(AuthContext);
@@ -38,7 +39,7 @@ const ForgotPassword_Page = () => {
           errorMessage = "Too many requests. Please try again later.";
         }
 
-        setMessage(errorMessage);
+        showError(errorMessage);
       })
       .finally(() => {
         setIsSubmitting(false);

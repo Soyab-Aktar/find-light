@@ -10,16 +10,33 @@ import AuthProvider from "./provider/AuthProvider.jsx";
 import ForgotPassword_Page from "./components/pages/ForgotPassword_Page.jsx";
 import Profile_Page from "./components/pages/Profile_Page.jsx";
 import Subscription_Page from "./components/pages/Subscription_Page.jsx";
+import CategoryBasedContents from "./components/pages/CategoryBasedContents.jsx";
+import PrivateRoute from "./components/routes/PrivateRoute.jsx";
+import ContentDetails from "./components/pages/ContentDetails.jsx";
+import ErrorPage from "./components/error/ErrorPage.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home_Layout></Home_Layout>,
-    children: [],
+    children: [
+      {
+        path: "/",
+        element: <CategoryBasedContents></CategoryBasedContents>,
+      },
+    ],
   },
   {
     path: "/subscription",
     element: <Subscription_Page></Subscription_Page>,
+  },
+  {
+    path: "/content/:id",
+    element: (
+      <PrivateRoute>
+        <ContentDetails></ContentDetails>,
+      </PrivateRoute>
+    ),
   },
   {
     path: "auth",
@@ -39,9 +56,17 @@ const router = createBrowserRouter([
       },
       {
         path: "/auth/profile",
-        element: <Profile_Page></Profile_Page>,
+        element: (
+          <PrivateRoute>
+            <Profile_Page></Profile_Page>,
+          </PrivateRoute>
+        ),
       },
     ],
+  },
+  {
+    path: "*",
+    element: <ErrorPage></ErrorPage>,
   },
 ]);
 

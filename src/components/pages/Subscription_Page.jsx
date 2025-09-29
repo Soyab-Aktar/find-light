@@ -1,9 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../provider/AuthProvider";
+import {
+  closeLoading,
+  showError,
+  showLoading,
+  showSuccess,
+} from "../../utils/toast";
 
 const Subscription_Page = () => {
-  const { user } = useContext(AuthContext);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const subscriptionPlans = [
@@ -50,15 +54,19 @@ const Subscription_Page = () => {
     },
   ];
 
-  const handleSubscribe = async (planName) => {
-    setIsProcessing(true);
+  const handleSubscribe = async (planType) => {
+    showLoading(`Processing ${planType} subscription...`);
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      alert(`Successfully subscribed to ${planName} plan!`);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      closeLoading();
+      showSuccess(
+        `You've successfully subscribed to the ${planType.toUpperCase()} plan! Welcome aboard!`,
+        "Subscription Successful"
+      );
     } catch (error) {
-      alert("Subscription failed. Please try again.");
-    } finally {
-      setIsProcessing(false);
+      closeLoading();
+      showError("Subscription failed. Please try again.", "Subscription Error");
     }
   };
 
