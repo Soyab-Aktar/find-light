@@ -58,4 +58,4 @@ The platform offers:
   - Simple star ratings
 - Booking confirmation flow with **SweetAlert2** modals for seamless interactions
 
-🚀 [Check Live Project](https://find-light-7b163.web.app/)
+🚀 [Check Live Link](https://find-light-7b163.web.app/)
