@@ -1,15 +1,21 @@
 import React from "react";
 import Navbar from "../Navbar";
+import Footer from "../Footer";
 
 const Loading = () => {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col md:w-11/12 lg:w-4/5 mx-auto">
       <header>
-        <Navbar></Navbar>
+        <Navbar />
       </header>
-      <main className="flex justify-center items-center">
+    
+      <main className="flex-grow flex justify-center items-center bg-[#F1ECCE]">
         <span className="loading loading-spinner loading-xl"></span>
       </main>
+      
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 };

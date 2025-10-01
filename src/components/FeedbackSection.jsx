@@ -16,9 +16,9 @@ const FeedbackSection = ({ serviceName }) => {
 
     setIsSubmitting(true);
 
-    // Create new comment object
+
     const comment = {
-      id: Date.now(), // Simple ID generation
+      id: Date.now(), 
       text: newComment.trim(),
       author: user?.displayName || user?.email || "Anonymous User",
       authorPhoto: user?.photoURL || null,
@@ -29,7 +29,6 @@ const FeedbackSection = ({ serviceName }) => {
       }),
     };
 
-    // Add comment to the list
     setComments((prev) => [comment, ...prev]);
     setNewComment("");
 
@@ -39,7 +38,7 @@ const FeedbackSection = ({ serviceName }) => {
   };
 
   return (
-    <div className="bg-[#9FC2CC] p-6 rounded-xl shadow-lg mt-3">
+    <div className="bg-[#9FC2CC] p-6 rounded-md mt-3">
       <h3 className="text-xl font-bold text-[#331832] mb-4">
         Comments & Feedback
       </h3>
@@ -97,7 +96,6 @@ const FeedbackSection = ({ serviceName }) => {
                 className="bg-white p-4 rounded-lg border border-[#9FC2CC] mb-3"
               >
                 <div className="flex items-start space-x-3">
-                  {/* User Avatar */}
                   <div className="flex-shrink-0">
                     {comment.authorPhoto ? (
                       <img

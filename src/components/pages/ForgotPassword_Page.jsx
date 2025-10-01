@@ -1,10 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaEnvelope, FaArrowLeft } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
 import { showError } from "../../utils/toast";
 
 const ForgotPassword_Page = () => {
+      useEffect(() => {
+      document.title = "Find Light | Password Recovery";
+    }, []);
   const { resetPassword } = useContext(AuthContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
@@ -69,7 +72,7 @@ const ForgotPassword_Page = () => {
                   name="email"
                   type="email"
                   required
-                  defaultValue={emailFromState} // Pre-fill with email from login page
+                  defaultValue={emailFromState}
                   className="w-full px-3 py-3 pl-10 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 border-[#694D75] bg-[#F1ECCE] text-[#331832]"
                   placeholder="Enter your email"
                 />
@@ -77,7 +80,6 @@ const ForgotPassword_Page = () => {
               </div>
             </div>
 
-            {/* Message Display */}
             {message && (
               <div
                 className={`text-sm p-3 rounded-lg ${

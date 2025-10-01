@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import Navbar from "../Navbar";
-import Footer from "../Footer";
 import FeedbackSection from "../FeedbackSection";
 import { showBookingSuccess, showConfirm } from "../../utils/toast";
 
 const ContentDetails = () => {
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [service, setService] = useState(null);
@@ -23,12 +22,11 @@ const ContentDetails = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.log("Error loading service:", error);
         setLoading(false);
       });
   }, [id]);
 
-  // Create star rating
+
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 0; i < Math.floor(rating); i++) {
@@ -41,7 +39,7 @@ const ContentDetails = () => {
     return stars;
   };
 
-  // Handle booking button click
+
   const handleBookService = async () => {
     const result = await showConfirm(
       `Book "${service.serviceName}" for ${service.pricing}?`,
@@ -55,9 +53,15 @@ const ContentDetails = () => {
     }
   };
 
+useEffect(() => {
+  if (service && service.serviceName) {
+    document.title = `Find Light | ${service.serviceName}`;
+  }
+}, [service]);
+
+
   return (
     <div className="bg-[#F1ECCE]">
-      <Navbar />
 
       <div className="max-w-4xl mx-auto my-3">
         {/* Show loading message */}
@@ -67,7 +71,6 @@ const ContentDetails = () => {
           </div>
         )}
 
-        {/* Show error if service not found */}
         {!loading && !service && (
           <div className="text-center py-20">
             <div className="text-2xl font-bold text-red-600 mb-4">
@@ -82,14 +85,13 @@ const ContentDetails = () => {
           </div>
         )}
 
-        {/* Show service details when loaded */}
         {!loading && service && (
           <>
             {/* Back Button */}
             <div className="mb-6">
               <button
                 onClick={() => navigate(-1)}
-                className="flex items-center space-x-2 text-[#1B5299] hover:text-[#0d4085] transition-all duration-300"
+                className="flex items-center space-x-2 text-[#1B5299] hover:text-[#0d4085] transition-all duration-300 cursor-pointer "
               >
                 <span className="text-xl">←</span>
                 <span className="font-semibold">Back to Services</span>
@@ -97,7 +99,7 @@ const ContentDetails = () => {
             </div>
 
             {/* Main Card */}
-            <div className="bg-[#9FC2CC] rounded-xl shadow-2xl overflow-hidden">
+            <div className="bg-[#9FC2CC] rounded-md overflow-hidden">
               {/* Hero Image */}
               <div className="relative h-64 md:h-80">
                 <img
@@ -105,7 +107,7 @@ const ContentDetails = () => {
                   alt={service.serviceName}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end">
+                <div className="absolute inset-0 flex items-end bg-black/50">
                   <div className="p-6 text-white">
                     <div className="flex items-center space-x-3 mb-2">
                       <span className="px-3 py-1 bg-[#1B5299] text-[#F1ECCE] text-xs font-semibold rounded-full uppercase">
@@ -294,8 +296,6 @@ const ContentDetails = () => {
           </>
         )}
       </div>
-
-      <Footer />
     </div>
   );
 };

@@ -1,8 +1,11 @@
-import React from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const ErrorPage = () => {
   const navigate = useNavigate();
+      useEffect(() => {
+      document.title = "Find Light | Page No Found";
+    }, []);
 
   return (
     <div className="min-h-screen bg-[#F1ECCE] flex items-center justify-center px-4">
@@ -45,10 +48,10 @@ const ErrorPage = () => {
             What can you do?
           </h3>
           <ul className="text-sm text-[#694D75] space-y-2 text-left">
-            <li>• Check the URL for typos</li>
-            <li>• Use the navigation menu to find what you're looking for</li>
-            <li>• Visit our services page to explore available options</li>
-            <li>• Contact support if you believe this is an error</li>
+            <li>Check the URL for typos</li>
+            <li>Use the navigation menu to find what you're looking for</li>
+            <li>Visit our services page to explore available options</li>
+            <li>Contact support if you believe this is an error</li>
           </ul>
         </div>
 

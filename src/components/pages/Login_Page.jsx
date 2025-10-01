@@ -1,10 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
 import { showError, showSuccess } from "../../utils/toast";
 
 const Login_Page = () => {
+      useEffect(() => {
+      document.title = "Find Light | Login";
+    }, []);
   const { loginUser, setUser, signInWithGoogle } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState({});
@@ -23,7 +26,6 @@ const Login_Page = () => {
     const form = new FormData(e.target);
     const email = form.get("email");
     const password = form.get("password");
-    console.log({ email, password });
     loginUser(email, password)
       .then((result) => {
         const user = result.user;
@@ -44,16 +46,14 @@ const Login_Page = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
-        console.log("Google sign-in successful:", user);
-        navigate("/"); // Redirect to home page
+        navigate("/"); 
       })
       .catch((error) => {
         console.error("Google sign-in error:", error);
 
-        // Handle specific errors
+
         if (error.code === "auth/popup-closed-by-user") {
-          console.log("User closed the popup");
-          // Don't show error for this case as it's user-initiated
+
         } else if (error.code === "auth/popup-blocked") {
           showError(
             "Please allow popups for this website to use Google Sign-In"
@@ -117,7 +117,7 @@ const Login_Page = () => {
 
             <div className="flex flex-col gap-1 text-right">
               <Link
-                to={`/auth/forgot-password`}
+                to={`/auth/login/forgot-password`}
                 state={{ email: email }}
                 type="button"
                 className="text-sm hover:underline transition-all duration-200 cursor-pointer text-[#1B5299]"

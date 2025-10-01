@@ -11,8 +11,6 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-
-// step 1
 export const AuthContext = createContext();
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
@@ -66,7 +64,6 @@ const AuthProvider = ({ children }) => {
     updateUserProfile,
   };
 
-  // Step 2
   return (
     <AuthContext.Provider value={authinfo}>{children}</AuthContext.Provider>
   );
